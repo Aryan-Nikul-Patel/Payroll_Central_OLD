@@ -1,721 +1,339 @@
-
-# from flask import Flask, render_template, request, redirect, url_for, flash
-# from flask_mysqldb import MySQL
-# import requests
-# import random
-
-# app = Flask(__name__)
-
-# # MySQL configurations
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'SQLserver@123'
-# app.config['MYSQL_DB'] = 'sk'
-
-# mysql = MySQL(app)
-
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-#     data = requests.get('https://employee-data-platform.vercel.app/api/fetchall')
-#     response = data.json()
-    
-#     # Use MySQL cursor
-#     cur = mysql.connection.cursor()
-
-#     for i in response:
-#         reg_days = random.randint(1, 30)
-#         rate = random.randint(1, 30)
-#         reg_pay = random.randint(1, 30)
-#         overtimes = random.randint(1, 30)
-#         overtimes_pay = random.randint(1, 30)
-#         medical = random.randint(1, 30)
-#         canteen = random.randint(1, 30)
-#         house = random.randint(1, 30)
-#         company_loan = random.randint(1, 30)
-#         net = random.randint(1, 30)
-        
-#         # Check if id exists
-#         cur.execute("SELECT * FROM payroll WHERE employeeID = %s", (i['id'],))
-#         if cur.fetchone() is None:
-#             cur.execute("INSERT INTO payroll(employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-#                         (i['id'], reg_days, rate, reg_pay, overtimes, overtimes_pay, medical, canteen, house, company_loan, net))
-    
-#     # Commit changes
-#     mysql.connection.commit()
-    
-#     # Fetch all payroll data
-#     cur.execute("SELECT * FROM payroll")
-#     result = cur.fetchall()
-
-#     cur.close()  # Close cursor
-
-#     if request.method == 'POST':
-#         userChoice = request.form
-#         choiceID = userChoice['employeeID']
-#         choiceopt = userChoice['opt']
-        
-#         if choiceopt == 'Update':
-#             return redirect(url_for('update', employeeID=choiceID))
-#         elif choiceopt == 'Read':
-#             return redirect(url_for('payroll'))
-#         elif choiceopt == 'Create':
-#             return redirect(url_for('create'))
-#         elif choiceopt == 'Delete':
-#             return redirect(url_for('delete', employeeID=choiceID))
-#         return redirect(url_for('payroll'))
-
-#     return render_template('index.html', payrollDetails=result)
-
-# @app.route('/create', methods=['GET', 'POST'])
-# def create():
-#     # Use MySQL cursor
-#     cur = mysql.connection.cursor()
-
-#     if request.method == 'POST':
-#         userDetails = request.form
-#         employeeID = userDetails['employeeID']
-#         Regular_days = userDetails['Regular_days']
-#         Rate = userDetails['Rate']
-#         Regular_pay = userDetails['Regular_pay']
-#         Overtimes = userDetails['Overtimes']
-#         Overtimes_pay = userDetails['Overtimes_pay']
-#         medical = userDetails['medical']
-#         canteen = userDetails['canteen']
-#         house = userDetails['house']
-#         company_loan = userDetails['company_loan']
-#         NET = userDetails['NET']
-        
-#         cur.execute("INSERT INTO payroll(employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-#                     (employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET))
-        
-#         # Commit changes
-#         mysql.connection.commit()
-        
-#         cur.close()  # Close cursor
-
-#         return redirect(url_for('payroll'))
-
-#     return render_template('create.html')
-
-# @app.route('/payroll')
-# def payroll():
-#     # Use MySQL cursor
-#     cur = mysql.connection.cursor()
-
-#     cur.execute("SELECT * FROM payroll")
-#     res = cur.fetchall()
-
-#     cur.close()  # Close cursor
-
-#     if len(res) > 0:
-#         return render_template('payroll.html', payrollDetails=res)
-#     else:
-#         return render_template('payroll.html', payrollDetails=None)
-
-# @app.route('/update/<string:employeeID>', methods=['GET', 'POST'])
-# def update(employeeID):
-#     # Use MySQL cursor
-#     cur = mysql.connection.cursor()
-
-#     cur.execute("SELECT * FROM payroll WHERE employeeID = %s", (employeeID,))
-#     res = cur.fetchall()
-    
-#     if len(res) > 0:
-#         result = res[0]  # Assuming only one record will match
-        
-#     if request.method == 'POST':
-#         userDetails = request.form
-#         employeeID = userDetails['employeeID']
-#         Regular_days = userDetails['Regular_days']
-#         Rate = userDetails['Rate']
-#         Regular_pay = userDetails['Regular_pay']
-#         Overtimes = userDetails['Overtimes']
-#         Overtimes_pay = userDetails['Overtimes_pay']
-#         medical = userDetails['medical']
-#         canteen = userDetails['canteen']
-#         house = userDetails['house']
-#         company_loan = userDetails['company_loan']
-#         NET = userDetails['NET']
-        
-#         cur.execute("UPDATE payroll SET Regular_days = %s, Rate = %s, Regular_pay = %s, Overtimes = %s, Overtimes_pay = %s, medical = %s, canteen = %s, house = %s, company_loan = %s, NET = %s WHERE employeeID = %s",
-#                     (Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET, employeeID))
-        
-#         # Commit changes
-#         mysql.connection.commit()
-        
-#         flash("Employee Updated Successfully")
-
-#         cur.execute("SELECT * FROM payroll WHERE employeeID = %s", (employeeID,))
-#         res = cur.fetchall()
-#         if len(res) > 0:
-#             result = res[0]  # Update result after update
-        
-#         cur.close()  # Close cursor
-
-#     return render_template('update.html', payrollDetails=result)
-
-# @app.route('/delete/<string:employeeID>', methods=['GET'])
-# def delete(employeeID):
-#     # Use MySQL cursor
-#     cur = mysql.connection.cursor()
-
-#     cur.execute("DELETE FROM payroll WHERE employeeID = %s", (employeeID,))
-    
-#     # Commit changes
-#     mysql.connection.commit()
-    
-#     flash("Employee Deleted Successfully")
-
-#     cur.close()  # Close cursor
-
-#     return redirect(url_for('payroll'))
-
-# if __name__ == '__main__':
-#     # Set the secret key to some random bytes. Keep this really secret!
-#     app.secret_key = 'super secret key'
-#     # Set the session cookie to be secure
-#     app.config['SESSION_TYPE'] = 'filesystem'
-#     # Set the debug flag to true
-#     app.debug = True
-#     # Run the app :)
-#     app.run()
-
-
-
-
-# from flask import Flask, render_template, request, redirect, url_for, flash
-# from flask_mysqldb import MySQL
-# import requests
-# import random
-
-# app = Flask(__name__)
-
-# # MySQL configurations
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'SQLserver@123'
-# app.config['MYSQL_DB'] = 'sk'  # Replace with your actual database name
-
-# mysql = MySQL(app)
-
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-#     if request.method == 'POST':
-#         userChoice = request.form
-#         choiceID = userChoice['employeeID']
-#         choiceopt = userChoice['opt']
-        
-#         if choiceopt == 'Update':
-#             return redirect(url_for('update', employeeID=choiceID))
-#         elif choiceopt == 'Read':
-#             return redirect(url_for('payroll'))
-#         elif choiceopt == 'Create':
-#             return redirect(url_for('create'))
-#         elif choiceopt == 'Delete':
-#             return redirect(url_for('delete', employeeID=choiceID))
-#         return redirect(url_for('payroll'))
-
-#     # Fetch all payroll data
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM payroll")
-#     result = cur.fetchall()
-#     cur.close()  # Close cursor
-
-#     return render_template('index.html', payrollDetails=result)
-
-# @app.route('/create', methods=['GET', 'POST'])
-# def create():
-#     if request.method == 'POST':
-#         userDetails = request.form
-#         employeeID = userDetails['employeeID']
-#         Regular_days = int(userDetails['Regular_days'])  # Convert to int as needed
-#         Rate = int(userDetails['Rate'])
-#         Regular_pay = int(userDetails['Regular_pay'])
-#         Overtimes = int(userDetails['Overtimes'])
-#         Overtimes_pay = int(userDetails['Overtimes_pay'])
-#         medical = int(userDetails['medical'])
-#         canteen = int(userDetails['canteen'])
-#         house = int(userDetails['house'])
-#         company_loan = int(userDetails['company_loan'])
-#         NET = int(userDetails['NET'])
-        
-#         cur = mysql.connection.cursor()
-#         cur.execute("INSERT INTO payroll(employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-#                     (employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET))
-#         mysql.connection.commit()
-#         cur.close()
-
-#         return redirect(url_for('payroll'))
-
-#     return render_template('create.html')
-
-# @app.route('/payroll')
-# def payroll():
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM payroll")
-#     res = cur.fetchall()
-#     cur.close()
-
-#     return render_template('payroll.html', payrollDetails=res)
-
-# @app.route('/update/<int:employeeID>', methods=['PUT'])
-# def update(employeeID):
-#     print("sasi")
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM payroll WHERE employeeID = %s", (employeeID,))
-#     res = cur.fetchone()
-    
-#     if res:
-#         if request.method == 'PUT':
-#             userDetails = request.form
-#             Regular_days = int(userDetails['Regular_days'])
-#             Rate = int(userDetails['Rate'])
-#             Regular_pay = int(userDetails['Regular_pay'])
-#             Overtimes = int(userDetails['Overtimes'])
-#             Overtimes_pay = int(userDetails['Overtimes_pay'])
-#             medical = int(userDetails['medical'])
-#             canteen = int(userDetails['canteen'])
-#             house = int(userDetails['house'])
-#             company_loan = int(userDetails['company_loan'])
-#             NET = int(userDetails['NET'])
-            
-#             cur.execute("UPDATE payroll SET Regular_days = %s, Rate = %s, Regular_pay = %s, Overtimes = %s, Overtimes_pay = %s, medical = %s, canteen = %s, house = %s, company_loan = %s, NET = %s WHERE employeeID = %s",
-#                         (Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET, employeeID))
-#             mysql.connection.commit()
-#             cur.close()
-
-#             flash("Employee Updated Successfully")
-#             return redirect(url_for('payroll'))
-
-#         cur.close()
-#         return render_template('update.html', payrollDetails=res)
-
-#     else:
-#         cur.close()
-#         return 'Employee not found', 404
-
-# @app.route('/delete/<string:employeeID>', methods=['GET'])
-# def delete(employeeID):
-#     cur = mysql.connection.cursor()
-#     cur.execute("DELETE FROM payroll WHERE employeeID = %s", (employeeID,))
-#     mysql.connection.commit()
-#     cur.close()
-
-#     flash("Employee Deleted Successfully")
-#     return redirect(url_for('payroll'))
-
-# if __name__ == '__main__':
-#     app.secret_key = 'super secret key'
-#     app.run(debug=True)
-
-
-
-# from flask import Flask, request, jsonify
-# from flask_mysqldb import MySQL
-# from flask import jsonify
-
-# app = Flask(__name__)
-
-# # MySQL configurations
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'SQLserver@123'
-# app.config['MYSQL_DB'] = 'sk'  # Replace with your actual database name
-
-# mysql = MySQL(app)
-
-# # Endpoint to handle CRUD operations
-
-# @app.route('/payroll', methods=['GET', 'POST'])
-# def handle_payroll():
-#     if request.method == 'GET':
-#         cur = mysql.connection.cursor()
-#         cur.execute("SELECT * FROM payroll")
-#         res = cur.fetchall()
-#         cur.close()
-        
-#         payroll_list = []
-#         for payroll in res:
-#             payroll_dict = {
-#                 'employeeID': payroll[0],
-#                 'Regular_days': payroll[1],
-#                 'Rate': payroll[2],
-#                 'Regular_pay': payroll[3],
-#                 'Overtimes': payroll[4],
-#                 'Overtimes_pay': payroll[5],
-#                 'medical': payroll[6],
-#                 'canteen': payroll[7],
-#                 'house': payroll[8],
-#                 'company_loan': payroll[9],
-#                 'NET': payroll[10]
-#             }
-#             payroll_list.append(payroll_dict)
-        
-#         return jsonify(payroll_list)
-
-#     elif request.method == 'POST':
-#         userDetails = request.json
-#         employeeID = userDetails['employeeID']
-#         Regular_days = userDetails['Regular_days']
-#         Rate = userDetails['Rate']
-#         Regular_pay = userDetails['Regular_pay']
-#         Overtimes = userDetails['Overtimes']
-#         Overtimes_pay = userDetails['Overtimes_pay']
-#         medical = userDetails['medical']
-#         canteen = userDetails['canteen']
-#         house = userDetails['house']
-#         company_loan = userDetails['company_loan']
-#         NET = userDetails['NET']
-        
-#         cur = mysql.connection.cursor()
-#         cur.execute("INSERT INTO payroll(employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-#                     (employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET))
-#         mysql.connection.commit()
-#         cur.close()
-
-#         return jsonify({"message": "Payroll entry created successfully"})
-
-# @app.route('/payroll/<int:employeeID>', methods=['GET', 'PUT', 'DELETE'])
-# def handle_single_payroll(employeeID):
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM payroll WHERE employeeID = %s", (employeeID,))
-#     res = cur.fetchone()
-    
-#     if not res:
-#         return jsonify({"error": "Employee not found"}), 404
-    
-#     if request.method == 'GET':
-#         payroll_dict = {
-#             'employeeID': res[0],
-#             'Regular_days': res[1],
-#             'Rate': res[2],
-#             'Regular_pay': res[3],
-#             'Overtimes': res[4],
-#             'Overtimes_pay': res[5],
-#             'medical': res[6],
-#             'canteen': res[7],
-#             'house': res[8],
-#             'company_loan': res[9],
-#             'NET': res[10]
-#         }
-#         cur.close()
-#         return jsonify(payroll_dict)
-    
-#     elif request.method == 'PUT':
-#         userDetails = request.json
-#         Regular_days = userDetails['Regular_days']
-#         Rate = userDetails['Rate']
-#         Regular_pay = userDetails['Regular_pay']
-#         Overtimes = userDetails['Overtimes']
-#         Overtimes_pay = userDetails['Overtimes_pay']
-#         medical = userDetails['medical']
-#         canteen = userDetails['canteen']
-#         house = userDetails['house']
-#         company_loan = userDetails['company_loan']
-#         NET = userDetails['NET']
-        
-#         cur.execute("UPDATE payroll SET Regular_days = %s, Rate = %s, Regular_pay = %s, Overtimes = %s, Overtimes_pay = %s, medical = %s, canteen = %s, house = %s, company_loan = %s, NET = %s WHERE employeeID = %s",
-#                     (Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET, employeeID))
-#         mysql.connection.commit()
-#         cur.close()
-
-#         return jsonify({"message": "Payroll entry updated successfully"})
-
-#     elif request.method == 'DELETE':
-#         cur.execute("DELETE FROM payroll WHERE employeeID = %s", (employeeID,))
-#         mysql.connection.commit()
-#         cur.close()
-
-#         return jsonify({"message": "Payroll entry deleted successfully"})
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-
-# import io
-# import csv
-# from flask import Flask, request, jsonify, Response, make_response
-# from flask_mysqldb import MySQL
-
-# app = Flask(__name__)
-
-# # MySQL configurations
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'SQLserver@123'
-# app.config['MYSQL_DB'] = 'sk'  # Replace with your actual database name
-
-# mysql = MySQL(app)
-
-# @app.route('/payroll/create', methods=['POST'])
-# def create_payroll():
-#     userDetails = request.json
-#     # Extract details from JSON
-#     # Ensure to validate and sanitize input data before querying
-#     cur = mysql.connection.cursor()
-#     cur.execute("INSERT INTO payroll(employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-#                 (userDetails['employeeID'], userDetails['Regular_days'], userDetails['Rate'], userDetails['Regular_pay'], userDetails['Overtimes'], userDetails['Overtimes_pay'], userDetails['medical'], userDetails['canteen'], userDetails['house'], userDetails['company_loan'], userDetails['NET']))
-#     mysql.connection.commit()
-#     cur.close()
-
-#     return jsonify({"message": "Payroll entry created successfully"})
-# @app.route('/payroll', methods=['GET'])
-# def read_all_payrolls():
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM payroll")
-#     res = cur.fetchall()
-#     cur.close()
-
-#     payroll_list = []
-#     for payroll in res:
-#         payroll_dict = {
-#             'employeeID': payroll[0],
-#             'Regular_days': payroll[1],
-#             'Rate': payroll[2],
-#             'Regular_pay': payroll[3],
-#             'Overtimes': payroll[4],
-#             'Overtimes_pay': payroll[5],
-#             'medical': payroll[6],
-#             'canteen': payroll[7],
-#             'house': payroll[8],
-#             'company_loan': payroll[9],
-#             'NET': payroll[10]
-#         }
-#         payroll_list.append(payroll_dict)
-
-#     return jsonify(payroll_list)
-# @app.route('/payroll/<int:employeeID>', methods=['GET'])
-# def read_single_payroll(employeeID):
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM payroll WHERE employeeID = %s", (employeeID,))
-#     res = cur.fetchone()
-#     cur.close()
-
-#     if res:
-#         payroll_dict = {
-#             'employeeID': res[0],
-#             'Regular_days': res[1],
-#             'Rate': res[2],
-#             'Regular_pay': res[3],
-#             'Overtimes': res[4],
-#             'Overtimes_pay': res[5],
-#             'medical': res[6],
-#             'canteen': res[7],
-#             'house': res[8],
-#             'company_loan': res[9],
-#             'NET': res[10]
-#         }
-#         return jsonify(payroll_dict)
-#     else:
-#         return jsonify({"error": "Employee not found"}), 404
-# @app.route('/payroll/update/<int:employeeID>', methods=['PUT'])
-# def update_payroll(employeeID):
-#     userDetails = request.json
-#     cur = mysql.connection.cursor()
-#     cur.execute("UPDATE payroll SET Regular_days = %s, Rate = %s, Regular_pay = %s, Overtimes = %s, Overtimes_pay = %s, medical = %s, canteen = %s, house = %s, company_loan = %s, NET = %s WHERE employeeID = %s",
-#                 (userDetails['Regular_days'], userDetails['Rate'], userDetails['Regular_pay'], userDetails['Overtimes'], userDetails['Overtimes_pay'], userDetails['medical'], userDetails['canteen'], userDetails['house'], userDetails['company_loan'], userDetails['NET'], employeeID))
-#     mysql.connection.commit()
-#     cur.close()
-
-#     return jsonify({"message": "Payroll entry updated successfully"})
-
-# @app.route('/payroll/delete/<int:employeeID>', methods=['DELETE'])
-# def delete_payroll(employeeID):
-#     cur = mysql.connection.cursor()
-#     cur.execute("DELETE FROM payroll WHERE employeeID = %s", (employeeID,))
-#     mysql.connection.commit()
-#     cur.close()
-
-#     return jsonify({"message": "Payroll entry deleted successfully"})
-
-
-# # Route to export payroll data as CSV file
-# @app.route('/payroll/export/csv', methods=['GET'])
-# def export_payroll_csv():
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM payroll")
-#     res = cur.fetchall()
-#     cur.close()
-
-#     # Generate CSV data
-#     output = io.StringIO()
-#     writer = csv.writer(output)
-
-#     # Write header
-#     writer.writerow(['employeeID', 'Regular_days', 'Rate', 'Regular_pay', 'Overtimes', 'Overtimes_pay', 'medical', 'canteen', 'house', 'company_loan', 'NET'])
-
-#     # Write rows
-#     for payroll in res:
-#         writer.writerow(payroll)
-
-#     # Save CSV data to a file
-#     csv_data = output.getvalue()
-#     with open('payroll_export.csv', 'w', newline='') as f:
-#         f.write(csv_data)
-
-#     # Create response to download the file
-#     response = make_response(csv_data)
-#     response.headers['Content-Type'] = 'text/csv'
-#     response.headers['Content-Disposition'] = 'attachment; filename=payroll_export.csv'
-
-#     return response
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-
-import io
-import csv
-from flask import Flask, request, jsonify, Response, make_response
+from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
-
+import MySQLdb.cursors
+import csv
+import json
+import os
+ 
 app = Flask(__name__)
-
+ 
 # MySQL configurations
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'SQLserver@123'
-app.config['MYSQL_DB'] = 'sk'  # Replace with your actual database name
-
+app.config['MYSQL_PASSWORD'] = 'Password@123456'
+app.config['MYSQL_DB'] = 'payroll_db'
+ 
 mysql = MySQL(app)
-
-# Function to export payroll data to CSV
-def export_payroll_to_csv():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM payroll")
-    res = cur.fetchall()
-    cur.close()
-
-    # Generate CSV data
-    output = io.StringIO()
-    writer = csv.writer(output)
-
-    # Write header
-    writer.writerow(['employeeID', 'Regular_days', 'Rate', 'Regular_pay', 'Overtimes', 'Overtimes_pay', 'medical', 'canteen', 'house', 'company_loan', 'NET'])
-
-    # Write rows
-    for payroll in res:
-        writer.writerow(payroll)
-
-    # Save CSV data to a file
-    csv_data = output.getvalue()
-    with open('payroll_export.csv', 'w', newline='') as f:
-        f.write(csv_data)
-
-# Route to create a new payroll entry
-@app.route('/payroll/create', methods=['POST'])
+ 
+# CSV file paths
+csv_files = {
+    'employees': 'employees.csv',
+    'clients': 'clients.csv',
+    'payroll': 'payroll.csv'
+}
+ 
+# Helper functions to write to CSV
+def write_to_csv(table, data):
+    with open(csv_files[table], 'w', newline='') as csvfile:
+        fieldnames = data[0].keys() if data else []
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in data:
+            writer.writerow(row)
+ 
+# Helper functions to read from CSV
+def read_from_csv(table):
+    if not os.path.exists(csv_files[table]):
+        return []
+    with open(csv_files[table], 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        return [row for row in reader]
+ 
+# Helper function to update JSON file
+def update_json(table, data):
+    with open(f'{table}.json', 'w') as jsonfile:
+        json.dump(data, jsonfile)
+ 
+# Employee CRUD operations
+@app.route('/employees', methods=['POST'])
+def create_employee():
+    data = request.json
+    name = data['name']
+    position = data['position']
+   
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('INSERT INTO employees (name, position) VALUES (%s, %s)', (name, position))
+    mysql.connection.commit()
+   
+    # Update CSV and JSON
+    cursor.execute('SELECT * FROM employees')
+    result = cursor.fetchall()
+    write_to_csv('employees', result)
+    update_json('employees', result)
+   
+    return jsonify({'message': 'Employee created successfully'}), 201
+ 
+@app.route('/employees', methods=['GET'])
+def get_employees():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM employees')
+    result = cursor.fetchall()
+   
+    write_to_csv('employees', result)
+    update_json('employees', result)
+   
+    return jsonify(result)
+ 
+@app.route('/employees/<int:id>', methods=['GET'])
+def get_employee(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM employees WHERE id = %s', (id,))
+    result = cursor.fetchone()
+   
+    if not result:
+        return jsonify({'message': 'Employee not found'}), 404
+   
+    return jsonify(result)
+ 
+@app.route('/employees/<int:id>', methods=['PUT'])
+def update_employee(id):
+    data = request.json
+    name = data['name']
+    position = data['position']
+   
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('UPDATE employees SET name = %s, position = %s WHERE id = %s', (name, position, id))
+    mysql.connection.commit()
+   
+    cursor.execute('SELECT * FROM employees')
+    result = cursor.fetchall()
+    write_to_csv('employees', result)
+    update_json('employees', result)
+   
+    return jsonify({'message': 'Employee updated successfully'})
+ 
+@app.route('/employees/<int:id>', methods=['DELETE'])
+def delete_employee(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('DELETE FROM employees WHERE id = %s', (id,))
+    mysql.connection.commit()
+   
+    cursor.execute('SELECT * FROM employees')
+    result = cursor.fetchall()
+    write_to_csv('employees', result)
+    update_json('employees', result)
+   
+    return jsonify({'message': 'Employee deleted successfully'})
+ 
+# Client CRUD operations
+@app.route('/clients', methods=['POST'])
+def create_client():
+    data = request.json
+    name = data['name']
+    contact_info = data['contact_info']
+    hourly_pay = data['hourly_pay']
+    overtime_pay = data['overtime_pay']
+   
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('INSERT INTO clients (name, contact_info,hourly_pay,overtime_pay) VALUES (%s, %s, %s, %s)', (name, contact_info,hourly_pay, overtime_pay))
+    mysql.connection.commit()
+   
+    cursor.execute('SELECT * FROM clients')
+    result = cursor.fetchall()
+    write_to_csv('clients', result)
+    update_json('clients', result)
+   
+    return jsonify({'message': 'Client created successfully'}), 201
+ 
+@app.route('/clients', methods=['GET'])
+def get_clients():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM clients')
+    result = cursor.fetchall()
+   
+    write_to_csv('clients', result)
+    update_json('clients', result)
+   
+    return jsonify(result)
+ 
+@app.route('/clients/<int:id>', methods=['GET'])
+def get_client(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM clients WHERE id = %s', (id,))
+    result = cursor.fetchone()
+   
+    if not result:
+        return jsonify({'message': 'Client not found'}), 404
+   
+    return jsonify(result)
+ 
+@app.route('/clients/<int:id>', methods=['PUT'])
+def update_client(id):
+    data = request.json
+    name = data['name']
+    contact_info = data['contact_info']
+    hourly_pay = data['hourly_pay']
+    overtime_pay = data['overtime_pay']
+   
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('UPDATE clients SET name = %s, contact_info = %s, hourly_pay = %s, overtime_pay = %s WHERE id = %s', (name, contact_info, hourly_pay,overtime_pay, id))
+    mysql.connection.commit()
+   
+    cursor.execute('SELECT * FROM clients')
+    result = cursor.fetchall()
+    write_to_csv('clients', result)
+    update_json('clients', result)
+   
+    return jsonify({'message': 'Client updated successfully'})
+ 
+@app.route('/clients/<int:id>', methods=['DELETE'])
+def delete_client(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('DELETE FROM clients WHERE id = %s', (id,))
+    mysql.connection.commit()
+   
+    cursor.execute('SELECT * FROM clients')
+    result = cursor.fetchall()
+    write_to_csv('clients', result)
+    update_json('clients', result)
+   
+    return jsonify({'message': 'Client deleted successfully'})
+ 
+# Payroll CRUD operations
+@app.route('/payrolls', methods=['POST'])
 def create_payroll():
-    userDetails = request.json
-    cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO payroll(employeeID, Regular_days, Rate, Regular_pay, Overtimes, Overtimes_pay, medical, canteen, house, company_loan, NET) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (userDetails['employeeID'], userDetails['Regular_days'], userDetails['Rate'], userDetails['Regular_pay'], userDetails['Overtimes'], userDetails['Overtimes_pay'], userDetails['medical'], userDetails['canteen'], userDetails['house'], userDetails['company_loan'], userDetails['NET']))
+    data = request.json
+    employee_id = data['employee_id']
+    client_id = data['client_id']
+    pay_date = data['pay_date']
+    No_of_hours_worked = data['No_of_hours_worked']
+    overtime_hours = data['overtime_hours']
+    Increment = data['Increment']
+   
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('INSERT INTO payroll (employee_id, client_id, pay_date, No_of_hours_worked,overtime_hours,Increment) VALUES (%s, %s, %s, %s, %s , %s)', (employee_id, client_id, pay_date, No_of_hours_worked,overtime_hours,Increment))
     mysql.connection.commit()
-    cur.close()
-
-    # Export updated payroll data to CSV after creating entry
-    export_payroll_to_csv()
-
-    return jsonify({"message": "Payroll entry created successfully"})
-
-# Route to update an existing payroll entry
-@app.route('/payroll/update/<int:employeeID>', methods=['PUT'])
-def update_payroll(employeeID):
-    userDetails = request.json
-    cur = mysql.connection.cursor()
-    cur.execute("UPDATE payroll SET Regular_days = %s, Rate = %s, Regular_pay = %s, Overtimes = %s, Overtimes_pay = %s, medical = %s, canteen = %s, house = %s, company_loan = %s, NET = %s WHERE employeeID = %s",
-                (userDetails['Regular_days'], userDetails['Rate'], userDetails['Regular_pay'], userDetails['Overtimes'], userDetails['Overtimes_pay'], userDetails['medical'], userDetails['canteen'], userDetails['house'], userDetails['company_loan'], userDetails['NET'], employeeID))
+   
+    cursor.execute('SELECT * FROM payroll')
+    result = cursor.fetchall()
+    write_to_csv('payroll', result)
+    update_json('payroll', result)
+   
+    return jsonify({'message': 'Payroll created successfully'}), 201
+ 
+@app.route('/payrolls', methods=['GET'])
+def get_payrolls():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM payroll')
+    result = cursor.fetchall()
+   
+    write_to_csv('payroll', result)
+    update_json('payroll', result)
+   
+    return jsonify(result)
+ 
+@app.route('/payrolls/<int:id>', methods=['GET'])
+def get_payroll(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM payroll WHERE id = %s', (id,))
+    result = cursor.fetchone()
+   
+    if not result:
+        return jsonify({'message': 'Payroll not found'}), 404
+   
+    return jsonify(result)
+ 
+@app.route('/payrolls/<int:id>', methods=['PUT'])
+def update_payroll(id):
+    data = request.json
+    employee_id = data['employee_id']
+    client_id = data['client_id']
+    pay_date = data['pay_date']
+    No_of_hours_worked = data['No_of_hours_worked']
+    overtime_hours = data['overtime_hours']
+    Increment = data['Increment']
+   
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('UPDATE payroll SET employee_id = %s, client_id = %s, pay_date = %s, No_of_hours_worked = %s, overtime_hours = %s, Increment = %s  WHERE id = %s', (employee_id, client_id, pay_date, No_of_hours_worked, overtime_hours, Increment , id))
     mysql.connection.commit()
-    cur.close()
-
-    # Export updated payroll data to CSV after updating entry
-    export_payroll_to_csv()
-
-    return jsonify({"message": "Payroll entry updated successfully"})
-
-# Route to delete a payroll entry
-@app.route('/payroll/delete/<int:employeeID>', methods=['DELETE'])
-def delete_payroll(employeeID):
-    cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM payroll WHERE employeeID = %s", (employeeID,))
+   
+    cursor.execute('SELECT * FROM payroll')
+    result = cursor.fetchall()
+    write_to_csv('payroll', result)
+    update_json('payroll', result)
+   
+    return jsonify({'message': 'Payroll updated successfully'})
+ 
+@app.route('/payrolls/<int:id>', methods=['DELETE'])
+def delete_payroll(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('DELETE FROM payroll WHERE id = %s', (id,))
     mysql.connection.commit()
-    cur.close()
+   
+    cursor.execute('SELECT * FROM payroll')
+    result = cursor.fetchall()
+    write_to_csv('payroll', result)
+    update_json('payroll', result)
+   
+    return jsonify({'message': 'Payroll deleted successfully'})
+ 
+# Additional functionalities
+@app.route('/employee_payroll/<int:employee_id>', methods=['GET'])
+def get_employee_payroll(employee_id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM payroll WHERE employee_id = %s', (employee_id,))
+    result = cursor.fetchall()
+   
+    if not result:
+        return jsonify({'message': 'No payroll records found for this employee'}), 404
+   
+    return jsonify(result)
+ 
+@app.route('/client_payroll/<int:client_id>', methods=['GET'])
+def get_client_payroll(client_id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM payroll WHERE client_id = %s', (client_id,))
+    result = cursor.fetchall()
+   
+    if not result:
+        return jsonify({'message': 'No payroll records found for this client'}), 404
+   
+    return jsonify(result)
 
-    # Export updated payroll data to CSV after deleting entry
-    export_payroll_to_csv()
+@app.route('/')
+def index():
+    return "Welcome to Payroll-Management-System"
 
-    return jsonify({"message": "Payroll entry deleted successfully"})
+@app.route('/calculate_payout', methods=['PUT'])
+def calculate_payout():
+    payroll_id = request.json.get('payroll_id')
 
-# Route to retrieve all payroll entries
-@app.route('/payroll', methods=['GET'])
-def read_all_payrolls():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM payroll")
-    res = cur.fetchall()
-    cur.close()
+    if not payroll_id:
+        return jsonify({'error': 'payroll_id is required'}), 400
 
-    payroll_list = []
-    for payroll in res:
-        payroll_dict = {
-            'employeeID': payroll[0],
-            'Regular_days': payroll[1],
-            'Rate': payroll[2],
-            'Regular_pay': payroll[3],
-            'Overtimes': payroll[4],
-            'Overtimes_pay': payroll[5],
-            'medical': payroll[6],
-            'canteen': payroll[7],
-            'house': payroll[8],
-            'company_loan': payroll[9],
-            'NET': payroll[10]
-        }
-        payroll_list.append(payroll_dict)
+    try:
+        cursor = mysql.connection.cursor()
 
-    return jsonify(payroll_list)
+        # Advanced SQL query to calculate the total payout
+        query = """
+        SELECT
+            p.employee_id,
+            (p.No_of_hours_worked * c.hourly_pay + p.overtime_hours * c.overtime_pay + p.Increment) AS total_payout
+        FROM
+            payroll p
+        JOIN
+            clients c ON p.client_id = c.id
+        WHERE
+            p.id = %s
+        """
+        cursor.execute(query, (payroll_id,))
+        result = cursor.fetchone()
 
-# Route to retrieve details of a specific payroll entry by employeeID
-@app.route('/payroll/<int:employeeID>', methods=['GET'])
-def read_payroll(employeeID):
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM payroll WHERE employeeID = %s", (employeeID,))
-    payroll = cur.fetchone()
-    cur.close()
+        if not result:
+            return jsonify({'error': 'Payroll record not found'}), 404
 
-    if not payroll:
-        return jsonify({"message": "Payroll entry not found"}), 404
+        employee_id = result[0]
+        total_payout = result[1]
 
-    payroll_dict = {
-        'employeeID': payroll[0],
-        'Regular_days': payroll[1],
-        'Rate': payroll[2],
-        'Regular_pay': payroll[3],
-        'Overtimes': payroll[4],
-        'Overtimes_pay': payroll[5],
-        'medical': payroll[6],
-        'canteen': payroll[7],
-        'house': payroll[8],
-        'company_loan': payroll[9],
-        'NET': payroll[10]
-    }
+        # Return the emp_id and total_payout as JSON
+        return jsonify({'employee_id': employee_id, 'total_payout': total_payout}), 200
 
-    return jsonify(payroll_dict)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-
-
-# Route to export payroll data as CSV file
-@app.route('/payroll/export/csv', methods=['GET'])
-def export_payroll_csv():
-    # Call the export function directly to ensure latest data
-    export_payroll_to_csv()
-
-    # Read the CSV file and serve as a response
-    with open('payroll_export.csv', 'r') as f:
-        csv_data = f.read()
-
-    response = make_response(csv_data)
-    response.headers['Content-Type'] = 'text/csv'
-    response.headers['Content-Disposition'] = 'attachment; filename=payroll_export.csv'
-
-    return response
-
+    finally:
+        cursor.close()
+# Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
+ 
