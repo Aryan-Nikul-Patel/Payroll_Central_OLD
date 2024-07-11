@@ -1,0 +1,52 @@
+-- Create database
+CREATE DATABASE payroll_db;
+USE payroll_db;
+
+-- Create employees table
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    userid VARCHAR(50),
+    position VARCHAR(100)
+);
+ALTER TABLE employees ADD COLUMN userid VARCHAR(50) ;
+-- Create clients table
+CREATE TABLE clients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    contact_info VARCHAR(255),
+    hourly_pay INT,
+    overtime_pay INT
+);
+
+-- Create payroll table
+CREATE TABLE payroll (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_id INT,
+    client_id INT,
+    pay_date VARCHAR(255),
+    No_of_hours_worked INT,
+    overtime_hours INT,
+    Increment INT,
+    FOREIGN KEY (employee_id) REFERENCES employees(id),
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+);
+drop table payroll;
+-- Create users table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    userid VARCHAR(100) UNIQUE,
+    password_hash VARCHAR(255),
+    role ENUM('employee', 'client', 'admin') NOT NULL
+);
+drop table users;
+select *from users;
+select *from employees;
+select *from clients;
+
+CREATE TABLE TotalSalary (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_id INT,
+    total_payout INT,
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
