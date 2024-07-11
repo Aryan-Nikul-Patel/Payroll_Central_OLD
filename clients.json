@@ -1,0 +1,100 @@
+[
+    {
+        "id": 6,
+        "name": "sasisanjay",
+        "contact_info": "sasisanjay@betacorp.com",
+        "hourly_pay": 25,
+        "overtime_pay": 10
+    },
+    {
+        "id": 9,
+        "name": "google",
+        "contact_info": "google@betacorp.com",
+        "hourly_pay": 25,
+        "overtime_pay": 10
+    },
+    {
+        "id": 10,
+        "name": "microsoft",
+        "contact_info": "microsoft@gmail.com",
+        "hourly_pay": 25,
+        "overtime_pay": 15
+    },
+    {
+        "id": 11,
+        "name": "Apple",
+        "contact_info": "Apple@gmail.com",
+        "hourly_pay": 25,
+        "overtime_pay": 15
+    },
+    {
+        "id": 12,
+        "name": "Jp",
+        "contact_info": "Jp@gmail.com",
+        "hourly_pay": 30,
+        "overtime_pay": 15
+    },
+    {
+        "id": 13,
+        "name": "payzapp",
+        "contact_info": "payzapp@gmail.com",
+        "hourly_pay": 10,
+        "overtime_pay": 15
+    },
+    {
+        "id": 14,
+        "name": "paypal",
+        "contact_info": "paypal@gmail.com",
+        "hourly_pay": 10,
+        "overtime_pay": 15
+    },
+    {
+        "id": 15,
+        "name": "BNY",
+        "contact_info": "BNY@gmail.com",
+        "hourly_pay": 10,
+        "overtime_pay": 15
+    },
+    {
+        "id": 16,
+        "name": "CLIENT1",
+        "contact_info": "CLIENT1@gmail.com",
+        "hourly_pay": 10,
+        "overtime_pay": 15
+    },
+    {
+        "id": 17,
+        "name": "CLIENT2",
+        "contact_info": "CLIENT2@gmail.com",
+        "hourly_pay": 20,
+        "overtime_pay": 15
+    },
+    {
+        "id": 18,
+        "name": "CLIENT3",
+        "contact_info": "CLIENT3@gmail.com",
+        "hourly_pay": 40,
+        "overtime_pay": 40
+    },
+    {
+        "id": 19,
+        "name": "CLIENT4",
+        "contact_info": "CLIENT4@gmail.com",
+        "hourly_pay": 30,
+        "overtime_pay": 40
+    },
+    {
+        "id": 20,
+        "name": "CLIENT5",
+        "contact_info": "CLIENT5@gmail.com",
+        "hourly_pay": 5,
+        "overtime_pay": 40
+    },
+    {
+        "id": 21,
+        "name": "CLIENT6",
+        "contact_info": "CLIENT6@gmail.com",
+        "hourly_pay": 50,
+        "overtime_pay": 40
+    }
+]

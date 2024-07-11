@@ -1,0 +1,15 @@
+id,name,contact_info,hourly_pay,overtime_pay
+6,sasisanjay,sasisanjay@betacorp.com,25,10
+9,google,google@betacorp.com,25,10
+10,microsoft,microsoft@gmail.com,25,15
+11,Apple,Apple@gmail.com,25,15
+12,Jp,Jp@gmail.com,30,15
+13,payzapp,payzapp@gmail.com,10,15
+14,paypal,paypal@gmail.com,10,15
+15,BNY,BNY@gmail.com,10,15
+16,CLIENT1,CLIENT1@gmail.com,10,15
+17,CLIENT2,CLIENT2@gmail.com,20,15
+18,CLIENT3,CLIENT3@gmail.com,40,40
+19,CLIENT4,CLIENT4@gmail.com,30,40
+20,CLIENT5,CLIENT5@gmail.com,5,40
+21,CLIENT6,CLIENT6@gmail.com,50,40

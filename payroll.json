@@ -1,0 +1,137 @@
+[
+    {
+        "id": 10,
+        "employee_id": 6,
+        "client_id": 6,
+        "pay_date": "2024-07-09",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 100
+    },
+    {
+        "id": 11,
+        "employee_id": 6,
+        "client_id": 6,
+        "pay_date": "2024-07-09",
+        "No_of_hours_worked": 45,
+        "overtime_hours": 15,
+        "Increment": 11
+    },
+    {
+        "id": 13,
+        "employee_id": 6,
+        "client_id": 9,
+        "pay_date": "2024-07-09",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 101
+    },
+    {
+        "id": 15,
+        "employee_id": 6,
+        "client_id": 9,
+        "pay_date": "2024-07-09",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 100
+    },
+    {
+        "id": 16,
+        "employee_id": 10,
+        "client_id": 10,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 100
+    },
+    {
+        "id": 17,
+        "employee_id": 6,
+        "client_id": 10,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 2000
+    },
+    {
+        "id": 18,
+        "employee_id": 11,
+        "client_id": 11,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 2000
+    },
+    {
+        "id": 19,
+        "employee_id": 12,
+        "client_id": 12,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 48,
+        "overtime_hours": 5,
+        "Increment": 2000
+    },
+    {
+        "id": 20,
+        "employee_id": 15,
+        "client_id": 15,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 48,
+        "overtime_hours": 5,
+        "Increment": 5000
+    },
+    {
+        "id": 21,
+        "employee_id": 16,
+        "client_id": 16,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 48,
+        "overtime_hours": 5,
+        "Increment": 1000
+    },
+    {
+        "id": 22,
+        "employee_id": 20,
+        "client_id": 20,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 48,
+        "overtime_hours": 5,
+        "Increment": 1000
+    },
+    {
+        "id": 23,
+        "employee_id": 21,
+        "client_id": 21,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 30,
+        "overtime_hours": 5,
+        "Increment": 1000
+    },
+    {
+        "id": 25,
+        "employee_id": 22,
+        "client_id": 17,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 30,
+        "overtime_hours": 5,
+        "Increment": 1500
+    },
+    {
+        "id": 26,
+        "employee_id": 6,
+        "client_id": 17,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 30,
+        "overtime_hours": 5,
+        "Increment": 1500
+    },
+    {
+        "id": 27,
+        "employee_id": 14,
+        "client_id": 17,
+        "pay_date": "2024-07-11",
+        "No_of_hours_worked": 30,
+        "overtime_hours": 5,
+        "Increment": 1500
+    }
+]

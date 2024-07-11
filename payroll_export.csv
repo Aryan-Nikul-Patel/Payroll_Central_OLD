@@ -1,0 +1,5 @@
+employeeID,Regular_days,Rate,Regular_pay,Overtimes,Overtimes_pay,medical,canteen,house,company_loan,NET
+11,8,8,8,8,8,90,8,90,8999,8
+22,8,8,8,8,8,0,8,0,8999,8
+77,8,8,8,8,8,90,8,90,50001,34287
+122,8,8,8,8,8,90,8,90,500001,34287
