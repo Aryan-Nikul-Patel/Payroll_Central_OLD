@@ -1,0 +1,29 @@
+[
+    {
+        "id": 2,
+        "employee_id": 7,
+        "client_id": 2,
+        "pay_date": "2024-07-09",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 100
+    },
+    {
+        "id": 3,
+        "employee_id": 7,
+        "client_id": 2,
+        "pay_date": "2024-07-09",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 100
+    },
+    {
+        "id": 4,
+        "employee_id": 7,
+        "client_id": 2,
+        "pay_date": "2024-07-09",
+        "No_of_hours_worked": 40,
+        "overtime_hours": 5,
+        "Increment": 100
+    }
+]
